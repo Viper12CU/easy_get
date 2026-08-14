@@ -1,8 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:easy_get/models/app_download.dart';
 import 'package:easy_get/providers/download_provider.dart';
 import 'package:easy_get/widgets/atoms/custom_icon_button.dart';
+import 'package:easy_get/widgets/atoms/diamond_file_icon.dart';
 import 'package:easy_get/widgets/pages/details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -193,20 +192,11 @@ class DownloadCard extends StatelessWidget {
   }
 
   Widget icon(ThemeData theme) {
-    return Transform.rotate(
-      angle: 45 * -math.pi / 180,
-      child: Container(
-        height: 49,
-        width: 49,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Transform.rotate(
-          angle: -45 * -math.pi / 180,
-          child: Center(child: Icon(Icons.download_rounded)),
-        ),
-      ),
+    return DiamondFileIcon(
+      icon: Icons.download_rounded,
+      size: 49,
+      backgroundColor: theme.colorScheme.surface,
+      iconColor: theme.colorScheme.onSurface,
     );
   }
 
