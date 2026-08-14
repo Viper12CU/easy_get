@@ -160,6 +160,8 @@ class DownloadProvider extends ChangeNotifier {
     required String url,
     String? fileName,
     bool requiresWifi = false,
+    int priority = 5,
+    String dir = "descargas",
   }) async {
     final name = fileName ?? url.split('/').last.split('?').first;
 
@@ -168,6 +170,7 @@ class DownloadProvider extends ChangeNotifier {
       fileName: name,
       directory: 'descargas',
       requiresWifi: requiresWifi,
+      priority: priority
     );
 
     final download = AppDownload(task: nativeTask);
@@ -177,6 +180,15 @@ class DownloadProvider extends ChangeNotifier {
     _tasks[download.id] = download;
 
     notifyListeners();
+  }
+
+  AppDownload detectFile (String url){
+    final task = _service.detectFile(url: url);
+
+
+    AppDownload download = AppDownload(task: task );
+
+    return download;
   }
 
   Future<void> pauseDownload(String id) async {
@@ -204,6 +216,7 @@ class DownloadProvider extends ChangeNotifier {
     final d = _tasks[id];
 
     if (d == null) {
+      debugPrint("No existe");
       return;
     }
 
@@ -237,9 +250,24 @@ class DownloadProvider extends ChangeNotifier {
 
     await _service.cancelTaskWithId(id);
 
-    _tasks.remove(id);
+    
 
     notifyListeners();
+  }
+
+  void removeDownload(String id) async {
+    final d = _tasks[id];
+
+    if (d == null) {
+      return;
+    }
+
+    await _service.deleteTaskRecord(d.id);
+
+    _tasks.remove(d.id);
+
+    notifyListeners();
+
   }
 
   void clearCompleted() {

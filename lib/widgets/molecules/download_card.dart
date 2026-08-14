@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class DownloadCard extends StatelessWidget {
   final AppDownload task;
   final String heroTag;
-  const DownloadCard({super.key, required this.heroTag, required this.task});
+  final bool showButton;
+  const DownloadCard({super.key, required this.heroTag, required this.task, this.showButton = true});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,8 @@ class DownloadCard extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 10),
-                              actionButton(context),
+                              if (showButton)
+                              ...[actionButton(context),]
                             ],
                           ),
                         ),
@@ -93,13 +95,14 @@ class DownloadCard extends StatelessWidget {
   }
 
   CustomIconButton actionButton(BuildContext context) {
-    final DownloadProvider provider = Provider.of<DownloadProvider>(context, listen: false);
+    final DownloadProvider provider = Provider.of<DownloadProvider>(
+      context,
+      listen: false,
+    );
 
     final IconData icon;
     final void Function()? onPressed;
 
-
-    
     switch (task.status) {
       case AppDownloadStatus.downloading:
         icon = Icons.pause;
@@ -119,25 +122,38 @@ class DownloadCard extends StatelessWidget {
         break;
       case AppDownloadStatus.completed:
         icon = Icons.delete_rounded;
-        onPressed = () => provider.removeCompletedDownload(task.id); // No action for completed downloads
+        onPressed = () => provider.removeCompletedDownload(
+          task.id,
+        ); // No action for completed downloads
         break;
       case AppDownloadStatus.canceled:
         icon = Icons.cancel;
-        onPressed = () => provider.cancelDownload(task.id); // No action for canceled downloads
+        onPressed = () => provider.removeDownload(
+          task.id,
+        ); // No action for canceled downloads
         break;
     }
-  
 
-
-    return CustomIconButton(
-      icon: icon,
-      onTap: () => onPressed?.call(),
-    );
+    return CustomIconButton(icon: icon, onTap: () => onPressed?.call());
   }
 
   Positioned progress(ThemeData theme) {
+    double top = 0;
+    
+    switch (task.status) {
+      case AppDownloadStatus.downloading:
+        top = 5;
+        break;
+      case AppDownloadStatus.completed:
+        top = 17;
+        break;
+     default:
+      top = 10;
+    }
+
+
     return Positioned(
-      top: task.status == AppDownloadStatus.downloading ? 5 : 10,
+      top: top,
       right: 10,
       child: Column(
         children: [
@@ -145,7 +161,12 @@ class DownloadCard extends StatelessWidget {
             spacing: 9.0,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("${task.progressPercent}%", style: theme.textTheme.labelSmall),
+              if (task.status != AppDownloadStatus.completed) ...[
+                Text(
+                  "${task.progressPercent}%",
+                  style: theme.textTheme.labelSmall,
+                ),
+              ],
               SizedBox(
                 width: 130,
                 child: LinearProgressIndicator(
@@ -160,10 +181,12 @@ class DownloadCard extends StatelessWidget {
               ),
             ],
           ),
-          if (task.status == AppDownloadStatus.downloading ) 
-          ... [
-            Text("${task.formattedSpeed} · ETA ${task.formattedEta}", style: theme.textTheme.labelSmall),
-          ]
+          if (task.status == AppDownloadStatus.downloading) ...[
+            Text(
+              "${task.formattedSpeed} · ETA ${task.formattedEta}",
+              style: theme.textTheme.labelSmall,
+            ),
+          ],
         ],
       ),
     );

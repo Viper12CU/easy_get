@@ -1,8 +1,7 @@
-import 'package:easy_get/providers/download_provider.dart';
 import 'package:easy_get/providers/tab_selected_provider.dart';
 import 'package:easy_get/widgets/atoms/downloads_tabs.dart';
 import 'package:easy_get/widgets/molecules/custom_app_bar.dart';
-import 'package:easy_get/widgets/organisms/download_card.dart';
+import 'package:easy_get/widgets/organisms/download_tabs_contains.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,28 +13,11 @@ class DownloadTemplate extends StatelessWidget {
     Widget buildDownloadsTabs(int index) {
       switch (index) {
         case 0:
-          return Consumer<DownloadProvider>(
-            builder: (context, provider, _) {
-              if (provider.tasks.isEmpty) {
-                return const Center(child: Text('No hay descargas todavía'));
-              }
-              return ListView.builder(
-                itemCount: provider.tasks.length,
-                itemBuilder: (context, index) {
-                  final download = provider.tasks[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0),
-                    child: DownloadCard(heroTag: download.id, task: download,),
-                  );
-                },
-              );
-            },
-          );
-
+          return const DownloadTabsContents(tab: DownloadTab.active);
         case 1:
-          return const Center(child: Text("Completed Downloads"));
+          return const DownloadTabsContents(tab: DownloadTab.finished);
         case 2:
-          return const Center(child: Text("All Downloads"));
+          return const DownloadTabsContents(tab: DownloadTab.all);
         default:
           return const Center(child: Text("Unknown Tab"));
       }

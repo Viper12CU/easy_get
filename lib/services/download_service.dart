@@ -132,6 +132,15 @@ class DownloadService {
     return task;
   }
 
+
+  DownloadTask detectFile({
+    required String url,
+  }){
+    final task = DownloadTask(url: url);
+
+    return task;
+  }
+
   // ---------------------------------------------------------------------------
   // PAUSE / RESUME
   // ---------------------------------------------------------------------------
