@@ -26,6 +26,10 @@ class DownloadProvider extends ChangeNotifier {
 
   bool get initialized => _initialized;
 
+  bool _initLoading = false;
+
+  bool get initLoading => _initLoading;
+
   List<AppDownload> get tasks {
     final result = _tasks.values.toList();
 
@@ -77,11 +81,15 @@ class DownloadProvider extends ChangeNotifier {
       return;
     }
 
+    _initLoading = true;
+
     await _service.init(maxConcurrent: maxConcurrentDownloads);
 
     await _restoreTasks();
 
     _initialized = true;
+
+    _initLoading = false;
 
     notifyListeners();
   }
@@ -250,12 +258,12 @@ class DownloadProvider extends ChangeNotifier {
 
     await _service.cancelTaskWithId(id);
 
-    
+
 
     notifyListeners();
   }
 
-  void removeDownload(String id) async {
+  Future<void> removeDownload(String id) async {
     final d = _tasks[id];
 
     if (d == null) {
@@ -267,7 +275,6 @@ class DownloadProvider extends ChangeNotifier {
     _tasks.remove(d.id);
 
     notifyListeners();
-
   }
 
   void clearCompleted() {

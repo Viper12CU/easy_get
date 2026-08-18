@@ -2,6 +2,7 @@ import 'package:easy_get/models/app_download.dart';
 import 'package:easy_get/providers/download_provider.dart';
 import 'package:easy_get/widgets/atoms/download_status_group.dart';
 import 'package:easy_get/widgets/atoms/empty_state.dart';
+import 'package:easy_get/widgets/atoms/loader_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,12 @@ class DownloadTabsContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DownloadProvider provider = Provider.of<DownloadProvider>(context);
+
     final List<Widget> content = getContent(tab, context);
-    return content.isEmpty
+    return provider.initLoading
+        ? const Center(child: LoaderAnimation(size: 50.0))
+        : content.isEmpty
         ? EmptyState()
         : ListView(children: getContent(tab, context));
   }
@@ -32,7 +37,7 @@ class DownloadTabsContents extends StatelessWidget {
             case DownloadTab.active:
               return download.status == AppDownloadStatus.downloading ||
                   download.status == AppDownloadStatus.paused ||
-                  download.status == AppDownloadStatus.queued ;
+                  download.status == AppDownloadStatus.queued;
           }
         })
         .toList();
@@ -62,7 +67,6 @@ class DownloadTabsContents extends StatelessWidget {
           DownloadStatusGroup(status: AppDownloadStatus.downloading),
           DownloadStatusGroup(status: AppDownloadStatus.queued),
           DownloadStatusGroup(status: AppDownloadStatus.paused),
-
         ];
     }
   }

@@ -1,4 +1,5 @@
 import 'package:easy_get/providers/download_provider.dart';
+import 'package:easy_get/widgets/atoms/app_confirm_dialog.dart';
 import 'package:easy_get/widgets/atoms/wifi_only_checkbox_row.dart';
 import 'package:easy_get/widgets/molecules/add_download_header.dart';
 import 'package:easy_get/widgets/molecules/directory_priority_selectors.dart';
@@ -29,7 +30,7 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
   int _selectedPriority = 5;
 
   // Wifi
-  bool wifiDownload = true;
+  bool _wifiDownload = true;
 
   bool _isLoadingGetFile = false;
   bool _isLoadingSubmit = false;
@@ -47,6 +48,8 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
     );
 
     Future<void> addDownload() async {
+      bool result = true;
+
       if (!_formKey.currentState!.validate()) {
         return;
       }
@@ -55,21 +58,37 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
         _isLoadingSubmit = true;
       });
 
-      await downloadProvider.addDownload(
-        url: _controller.text,
-        requiresWifi: wifiDownload,
-        priority: _selectedPriority,
-      );
+      try {
+        if (!_wifiDownload) {
+          result = await showAppConfirmDialog(
+            context,
+            title: "Descraga sin Wifi",
+            message:
+                "Por el tamaño del archivo se recomienda usar una red WIFI. ¿Continuar igualmente?",
+            tone: ConfirmTone.warning,
+          );
+        }
 
-      if (!context.mounted) {
-        return;
+        if (result) {
+          await downloadProvider.addDownload(
+            url: _controller.text,
+            requiresWifi: _wifiDownload,
+            priority: _selectedPriority,
+          );
+
+          if (!context.mounted) {
+            return;
+          }
+
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      } finally {
+        setState(() {
+          _isLoadingSubmit = false;
+        });
       }
-
-      setState(() {
-        _isLoadingSubmit = false;
-      });
-
-      Navigator.pop(context);
     }
 
     Future<void> detectFile() async {
@@ -98,10 +117,7 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
 
     return AddDownloadSheetScaffold(
       header: const AddDownloadHeader(),
-      urlInput: UrlInputField(
-        formKey: _formKey,
-        controller: _controller,
-      ),
+      urlInput: UrlInputField(formKey: _formKey, controller: _controller),
       detectSection: FileDetectSection(
         isLoading: _isLoadingGetFile,
         detectedFileName: _detectedFileName,
@@ -123,10 +139,10 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
         },
       ),
       wifiOption: WifiOnlyCheckboxRow(
-        value: wifiDownload,
+        value: _wifiDownload,
         onChanged: (value) {
           setState(() {
-            wifiDownload = value;
+            _wifiDownload = value;
           });
         },
       ),

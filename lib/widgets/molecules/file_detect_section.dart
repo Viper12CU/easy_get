@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_get/widgets/atoms/loader_animation.dart';
 import 'package:easy_get/widgets/molecules/detected_file_preview_card.dart';
 import 'package:flutter/material.dart';
 
@@ -40,9 +41,7 @@ class FileDetectSection extends StatelessWidget {
                       spacing: 15.0,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircularProgressIndicator(
-                          color: theme.colorScheme.primary,
-                        ),
+                        LoaderAnimation(size: 20.0 ,),
                         const Text('Loading file...'),
                       ],
                     )

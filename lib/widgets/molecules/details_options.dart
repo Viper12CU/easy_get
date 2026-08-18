@@ -1,6 +1,7 @@
 import 'package:easy_get/models/app_download.dart';
 import 'package:easy_get/models/button_details_model.dart';
 import 'package:easy_get/providers/download_provider.dart';
+import 'package:easy_get/widgets/atoms/app_confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,9 +34,18 @@ class _DetailsOptionsState extends State<DetailsOptions> {
           ),
           ButtonContent(
             label: "Cancel",
-            onTap: () async => {
-              await downloadProvider.cancelDownload(widget.download.id),
-              debugPrint("Cancel ${widget.download.toString()}"),
+            onTap: () async {
+              final bool result = await showAppConfirmDialog(
+                context,
+                title: "Cancelar esta descarga",
+                message: "¿Desea detener la descarga de este archivo?",
+                tone: ConfirmTone.warning,
+                confirmLabel: "Detener",
+              );
+              if (result) {
+                await downloadProvider.cancelDownload(widget.download.id);
+                debugPrint("Cancel ${widget.download.toString()}");
+              }
             },
           ),
         ]);
@@ -51,9 +61,19 @@ class _DetailsOptionsState extends State<DetailsOptions> {
           ),
           ButtonContent(
             label: "Cancel",
-            onTap: () async => {
-              await downloadProvider.cancelDownload(widget.download.id),
-              debugPrint("Cancel ${widget.download.toString()}"),
+            onTap: () async {
+              final bool result = await showAppConfirmDialog(
+                context,
+                title: "Cancelar esta descarga",
+                message: "¿Desea detener la descarga de este archivo?",
+                tone: ConfirmTone.warning,
+                confirmLabel: "Detener",
+              );
+
+              if (result) {
+                await downloadProvider.cancelDownload(widget.download.id);
+                debugPrint("Cancel ${widget.download.toString()}");
+              }
             },
           ),
         ]);
@@ -81,25 +101,55 @@ class _DetailsOptionsState extends State<DetailsOptions> {
           ),
           ButtonContent(
             label: "Cancel",
-            onTap: () async => {
-              await downloadProvider.cancelDownload(widget.download.id),
-              debugPrint("Cancel ${widget.download.toString()}"),
+            onTap: () async {
+              final bool result = await showAppConfirmDialog(
+                context,
+                title: "Cancelar esta descarga",
+                message: "¿Desea detener la descarga de este archivo?",
+                tone: ConfirmTone.warning,
+                confirmLabel: "Detener",
+              );
+
+              if (result) {
+                await downloadProvider.cancelDownload(widget.download.id);
+                debugPrint("Cancel ${widget.download.toString()}");
+              }
             },
           ),
         ]);
         break;
       case AppDownloadStatus.completed:
         buttonContents.addAll([
-          ButtonContent(label: "Open", onTap: () async => {}),
+          ButtonContent(
+            label: "Open",
+            onTap: () async {
+              await showAppConfirmDialog(
+                context,
+                title: "Ver en la carpeta",
+                message: "Abrir archivo descargado en la carpeta de origen",
+                tone: ConfirmTone.info,
+                confirmLabel: "Abrir",
+              );
+            },
+          ),
           ButtonContent(
             label: "Delete",
-            onTap: () async => {
-              await downloadProvider.removeCompletedDownload(
-                widget.download.id,
-              ),
-              
-              Navigator.pop(context),
-              debugPrint("Delete ${widget.download.toString()}"),
+            onTap: () async {
+              final bool result = await showAppConfirmDialog(
+                context,
+                title: "Eliminar esta descarga",
+                message: "¿Desea eliminar este registro completado?",
+                tone: ConfirmTone.warning,
+                confirmLabel: "Detener",
+              );
+
+              if (result && mounted) {
+                Navigator.pop(context);
+                await downloadProvider.removeCompletedDownload(
+                  widget.download.id,
+                );
+                debugPrint("Delete ${widget.download.toString()}");
+              }
             },
           ),
         ]);
@@ -116,10 +166,20 @@ class _DetailsOptionsState extends State<DetailsOptions> {
           ),
           ButtonContent(
             label: "Delete",
-            onTap: () => {
-              Navigator.pop(context),
-              downloadProvider.removeDownload(widget.download.id),
-              debugPrint("Delete ${widget.download.toString()}"),
+            onTap: () async {
+              final bool result = await showAppConfirmDialog(
+                context,
+                title: "Eliminar esta registro",
+                message: "¿Desea eliminar este registro canceldo?",
+                tone: ConfirmTone.warning,
+                confirmLabel: "Eliminar",
+              );
+
+              if (result && mounted) {
+                Navigator.pop(context);
+                await downloadProvider.removeDownload(widget.download.id);
+                debugPrint("Delete ${widget.download.toString()}");
+              }
             },
           ),
         ]);
@@ -130,7 +190,6 @@ class _DetailsOptionsState extends State<DetailsOptions> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _initializeButtonContents();
   }

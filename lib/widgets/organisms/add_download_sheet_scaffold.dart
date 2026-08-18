@@ -1,3 +1,4 @@
+import 'package:easy_get/widgets/atoms/loader_animation.dart';
 import 'package:flutter/material.dart';
 
 class AddDownloadSheetScaffold extends StatelessWidget {
@@ -52,7 +53,7 @@ class AddDownloadSheetScaffold extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onSubmit,
                     child: isLoadingSubmit
-                        ? const CircularProgressIndicator()
+                        ? LoaderAnimation(size: 30.0, color: Theme.of(context).colorScheme.onPrimary)
                         : const Text('Start Download'),
                   ),
                 ),

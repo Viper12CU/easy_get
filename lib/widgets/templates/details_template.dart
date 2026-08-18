@@ -16,11 +16,25 @@ class DetailsTemplate extends StatelessWidget {
       context,
     );
 
-    final AppDownload download = downloadProvider.tasks.firstWhere(
-      (task) => task.id == heroTag,
-    );
+    AppDownload? download;
+    for (final task in downloadProvider.tasks) {
+      if (task.id == heroTag) {
+        download = task;
+        break;
+      }
+    }
 
-    return  Padding(
+    if (download == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted && Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+      });
+
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         spacing: 20.0,
@@ -28,11 +42,15 @@ class DetailsTemplate extends StatelessWidget {
           Hero(
             curve: Curves.easeInOut,
             tag: heroTag,
-            child: DownloadCard(heroTag: heroTag, task: download, showButton: false,),
+            child: DownloadCard(
+              heroTag: heroTag,
+              task: download,
+              showButton: false,
+            ),
           ),
           SizedBox(height: 20.0),
-          Expanded(child: DetailsTable(download: download,)),
-          DetailsOptions(download: download,)
+          Expanded(child: DetailsTable(download: download)),
+          DetailsOptions(download: download),
         ],
       ),
     );

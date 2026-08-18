@@ -1,5 +1,6 @@
 import 'package:easy_get/models/app_download.dart';
 import 'package:easy_get/providers/download_provider.dart';
+import 'package:easy_get/theme/app_theme.dart';
 import 'package:easy_get/widgets/atoms/custom_icon_button.dart';
 import 'package:easy_get/widgets/atoms/diamond_file_icon.dart';
 import 'package:easy_get/widgets/pages/details_page.dart';
@@ -15,6 +16,28 @@ class DownloadCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
+    
+    Color color(AppColors appColors, AppDownload d) {
+      switch (d.status) {
+        case AppDownloadStatus.downloading:
+          return appColors.statusDownloading;
+        case AppDownloadStatus.paused:
+          return appColors.statusPaused;
+        case AppDownloadStatus.queued:
+          return appColors.statusQueued;
+        case AppDownloadStatus.error:
+          return appColors.statusError;
+        case AppDownloadStatus.completed:
+          return appColors.statusDone;
+        case AppDownloadStatus.canceled:
+          return appColors.statusDone;
+      }
+    }
+
+    final Color cardColor = color(context.appColors, task);
+
+
     return SizedBox(
       height: 130,
       width: double.infinity,
@@ -32,7 +55,7 @@ class DownloadCard extends StatelessWidget {
               child: ClipPath(
                 clipper: ProjectCardClipper(),
                 child: Container(
-                  decoration: const BoxDecoration(color: Color(0xFFC8F39B)),
+                  decoration: BoxDecoration(color: cardColor),
                   child: Stack(
                     children: [
                       label(theme),

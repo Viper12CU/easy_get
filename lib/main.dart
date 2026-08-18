@@ -11,16 +11,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  // Se crea UNA sola vez, antes de runApp, para poder llamar a init()
-  // sobre la misma instancia que después se registra en el árbol.
+ 
   final downloadProvider = DownloadProvider();
   downloadProvider.init();
+
+
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TabSelectedProvider()),
-        ChangeNotifierProvider(create: (_) => PreferencesProvider()),
+        ChangeNotifierProvider(create: (_) => PreferencesProvider()..init()),
         ChangeNotifierProvider.value(value: downloadProvider),
       ],
       child: const MyApp(),
