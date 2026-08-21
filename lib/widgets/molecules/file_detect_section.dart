@@ -42,10 +42,10 @@ class FileDetectSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         LoaderAnimation(size: 20.0 ,),
-                        const Text('Loading file...'),
+                        const Text('Cargando archivo...'),
                       ],
                     )
-                  : const Text('Detect file'),
+                  : const Text('Detectar archivo'),
             ),
           ),
         ),

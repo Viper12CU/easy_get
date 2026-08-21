@@ -33,9 +33,9 @@ class DirectoryPrioritySelectors extends StatelessWidget {
         Flexible(
           flex: 2,
           child: LabeledDropdownField<String>(
-            label: 'Directory',
+            label: 'Directorio',
             value: selectedDirectory,
-            hintText: 'Select directory',
+            hintText: 'Selecciona un directorio',
             items: directoryOptions
                 .map(
                   (item) => DropdownMenuItem<String>(
@@ -50,9 +50,9 @@ class DirectoryPrioritySelectors extends StatelessWidget {
         Flexible(
           flex: 1,
           child: LabeledDropdownField<int>(
-            label: 'Priority',
+            label: 'Prioridad',
             value: selectedPriority,
-            hintText: 'Select priority',
+            hintText: 'Selecciona una prioridad',
             items: priorityOptions
                 .map(
                   (value) => DropdownMenuItem<int>(

@@ -24,8 +24,8 @@ class AddDownloadSheetScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.7,
-      minChildSize: 0.3,
+      initialChildSize: 0.73,
+      minChildSize: 0.4,
       maxChildSize: 1,
       expand: false,
       builder: (context, scrollController) => Padding(
@@ -54,7 +54,7 @@ class AddDownloadSheetScaffold extends StatelessWidget {
                     onPressed: onSubmit,
                     child: isLoadingSubmit
                         ? LoaderAnimation(size: 30.0, color: Theme.of(context).colorScheme.onPrimary)
-                        : const Text('Start Download'),
+                        : const Text('Iniciar descarga'),
                   ),
                 ),
               ],

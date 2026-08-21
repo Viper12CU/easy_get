@@ -10,9 +10,9 @@ class AddDownloadHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Add a new download', style: theme.textTheme.headlineSmall),
+        Text('Añadir una nueva descarga', style: theme.textTheme.headlineSmall),
         Text(
-          "Paste the link and we'll detect the file for you.",
+          "Pega el enlace y detectaremos el archivo por ti.",
           style: theme.textTheme.labelSmall,
         ),
       ],

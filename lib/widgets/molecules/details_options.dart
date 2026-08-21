@@ -26,14 +26,14 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.downloading:
         buttonContents.addAll([
           ButtonContent(
-            label: "Pause",
+            label: "Pausar",
             onTap: () async => {
               await downloadProvider.pauseDownload(widget.download.id),
-              debugPrint("Pause ${widget.download.toString()}"),
+              debugPrint("Pausar ${widget.download.toString()}"),
             },
           ),
           ButtonContent(
-            label: "Cancel",
+            label: "Cancelar",
             onTap: () async {
               final bool result = await showAppConfirmDialog(
                 context,
@@ -44,7 +44,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
               );
               if (result) {
                 await downloadProvider.cancelDownload(widget.download.id);
-                debugPrint("Cancel ${widget.download.toString()}");
+                debugPrint("Cancelar ${widget.download.toString()}");
               }
             },
           ),
@@ -53,14 +53,14 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.paused:
         buttonContents.addAll([
           ButtonContent(
-            label: "Resume",
+            label: "Reanudar",
             onTap: () async => {
               await downloadProvider.resumeDownload(widget.download.id),
-              debugPrint("Resume ${widget.download.toString()}"),
+              debugPrint("Reanudar ${widget.download.toString()}"),
             },
           ),
           ButtonContent(
-            label: "Cancel",
+            label: "Cancelar",
             onTap: () async {
               final bool result = await showAppConfirmDialog(
                 context,
@@ -72,7 +72,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
 
               if (result) {
                 await downloadProvider.cancelDownload(widget.download.id);
-                debugPrint("Cancel ${widget.download.toString()}");
+                debugPrint("Cancelar ${widget.download.toString()}");
               }
             },
           ),
@@ -81,10 +81,10 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.error:
         buttonContents.addAll([
           ButtonContent(
-            label: "Retry",
+            label: "Reintentar",
             onTap: () async => {
               await downloadProvider.retryDownload(widget.download.id),
-              debugPrint("Retry ${widget.download.toString()}"),
+              debugPrint("Reintentar ${widget.download.toString()}"),
             },
           ),
         ]);
@@ -93,14 +93,14 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.queued:
         buttonContents.addAll([
           ButtonContent(
-            label: "Pause",
+            label: "Pausar",
             onTap: () async => {
               await downloadProvider.pauseDownload(widget.download.id),
-              debugPrint("Pause ${widget.download.toString()}"),
+              debugPrint("Pausar ${widget.download.toString()}"),
             },
           ),
           ButtonContent(
-            label: "Cancel",
+            label: "Cancelar",
             onTap: () async {
               final bool result = await showAppConfirmDialog(
                 context,
@@ -112,7 +112,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
 
               if (result) {
                 await downloadProvider.cancelDownload(widget.download.id);
-                debugPrint("Cancel ${widget.download.toString()}");
+                debugPrint("Cancelar ${widget.download.toString()}");
               }
             },
           ),
@@ -121,7 +121,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.completed:
         buttonContents.addAll([
           ButtonContent(
-            label: "Open",
+            label: "Abrir",
             onTap: () async {
               await showAppConfirmDialog(
                 context,
@@ -133,7 +133,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
             },
           ),
           ButtonContent(
-            label: "Delete",
+            label: "Eliminar",
             onTap: () async {
               final bool result = await showAppConfirmDialog(
                 context,
@@ -148,7 +148,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
                 await downloadProvider.removeCompletedDownload(
                   widget.download.id,
                 );
-                debugPrint("Delete ${widget.download.toString()}");
+                debugPrint("Eliminar ${widget.download.toString()}");
               }
             },
           ),
@@ -158,19 +158,19 @@ class _DetailsOptionsState extends State<DetailsOptions> {
       case AppDownloadStatus.canceled:
         buttonContents.addAll([
           ButtonContent(
-            label: "Retry",
+            label: "Reintentar",
             onTap: () async => {
               await downloadProvider.retryDownload(widget.download.id),
-              debugPrint("Retry ${widget.download.toString()}"),
+              debugPrint("Reintentar ${widget.download.toString()}"),
             },
           ),
           ButtonContent(
-            label: "Delete",
+            label: "Eliminar",
             onTap: () async {
               final bool result = await showAppConfirmDialog(
                 context,
                 title: "Eliminar esta registro",
-                message: "¿Desea eliminar este registro canceldo?",
+                message: "¿Desea eliminar este registro cancelado?",
                 tone: ConfirmTone.warning,
                 confirmLabel: "Eliminar",
               );
@@ -178,7 +178,7 @@ class _DetailsOptionsState extends State<DetailsOptions> {
               if (result && mounted) {
                 Navigator.pop(context);
                 await downloadProvider.removeDownload(widget.download.id);
-                debugPrint("Delete ${widget.download.toString()}");
+                debugPrint("Eliminar ${widget.download.toString()}");
               }
             },
           ),

@@ -17,7 +17,7 @@ class DetailsPage extends StatelessWidget {
             Navigator.pop(context);
           }),
         ),
-        title: Text("Download details", style: Theme.of(context).textTheme.headlineSmall,)
+        title: Text("Detalles de la descarga", style: Theme.of(context).textTheme.headlineSmall,)
       ),
       body: DetailsTemplate(heroTag: heroTag,),
     );

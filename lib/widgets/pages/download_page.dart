@@ -21,7 +21,7 @@ class DownloadPage extends StatelessWidget {
             builder: (_) => AddDownloadBottonSheet(),
           );
         },
-        tooltip: 'New Download',
+        tooltip: 'Nueva descarga',
         child: const Icon(Icons.add),
       ),
     );

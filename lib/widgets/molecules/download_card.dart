@@ -4,6 +4,7 @@ import 'package:easy_get/theme/app_theme.dart';
 import 'package:easy_get/widgets/atoms/custom_icon_button.dart';
 import 'package:easy_get/widgets/atoms/diamond_file_icon.dart';
 import 'package:easy_get/widgets/pages/details_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,80 +39,85 @@ class DownloadCard extends StatelessWidget {
     final Color cardColor = color(context.appColors, task);
 
 
-    return SizedBox(
-      height: 130,
-      width: double.infinity,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => DetailsPage(heroTag: heroTag),
-                  ),
-                );
-              },
-              child: ClipPath(
-                clipper: ProjectCardClipper(),
-                child: Container(
-                  decoration: BoxDecoration(color: cardColor),
-                  child: Stack(
-                    children: [
-                      label(theme),
-                      Positioned(
-                        top: 60,
-                        left: 20,
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 75,
-                          child: Row(
-                            spacing: 4,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              icon(theme),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  spacing: 2,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      task.fileName,
-                                      style: theme.textTheme.bodyMedium!
-                                          .copyWith(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: theme.colorScheme.onPrimary,
-                                          ),
-                                    ),
-                                    Text(
-                                      "${task.formattedSize} · ${task.url}",
-                                      style: theme.textTheme.labelSmall!
-                                          .copyWith(
-                                            fontSize: 10,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                    ),
-                                  ],
+    return CupertinoContextMenu(
+      actions: [
+        CupertinoContextMenuAction(trailingIcon: Icons.share,child: Text("Compartir"),)
+      ],
+      child: SizedBox(
+        height: 130,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => DetailsPage(heroTag: heroTag),
+                    ),
+                  );
+                },
+                child: ClipPath(
+                  clipper: ProjectCardClipper(),
+                  child: Container(
+                    decoration: BoxDecoration(color: cardColor),
+                    child: Stack(
+                      children: [
+                        label(theme),
+                        Positioned(
+                          top: 60,
+                          left: 20,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 75,
+                            child: Row(
+                              spacing: 4,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                icon(theme),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    spacing: 2,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        task.fileName,
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: theme.colorScheme.onPrimary,
+                                            ),
+                                      ),
+                                      Text(
+                                        "${task.formattedSize} · ${task.url}",
+                                        style: theme.textTheme.labelSmall!
+                                            .copyWith(
+                                              fontSize: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              if (showButton)
-                              ...[actionButton(context),]
-                            ],
+                                SizedBox(width: 10),
+                                if (showButton)
+                                ...[actionButton(context),]
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-
-          progress(theme),
-        ],
+      
+            progress(theme),
+          ],
+        ),
       ),
     );
   }
@@ -205,7 +211,7 @@ class DownloadCard extends StatelessWidget {
           ),
           if (task.status == AppDownloadStatus.downloading) ...[
             Text(
-              "${task.formattedSpeed} · ETA ${task.formattedEta}",
+              "${task.formattedSpeed} · Tiempo restante ${task.formattedEta}",
               style: theme.textTheme.labelSmall,
             ),
           ],

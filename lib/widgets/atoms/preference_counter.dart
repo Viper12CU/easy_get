@@ -1,14 +1,15 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 class PreferenceCounter extends StatefulWidget {
   final int initialValue;
   final ValueChanged<int>? onChange;
+  final int maxValue;
+  final int minValue;
   const PreferenceCounter({
     super.key,
     required this.initialValue,
-    this.onChange,
+    this.onChange,  this.maxValue = 10,  this.minValue = 1,
   });
 
   @override
@@ -36,7 +37,7 @@ class _PreferenceCounterState extends State<PreferenceCounter> {
       children: [
         _buildButton(
           () {
-            if (count > 1) {
+            if (count > widget.minValue) {
               setState(() {
                 count--;
               });
@@ -50,7 +51,7 @@ class _PreferenceCounterState extends State<PreferenceCounter> {
         Text(count.toString(), style: theme.textTheme.bodyMedium),
         _buildButton(
           () {
-            if (count < 10) {
+            if (count < widget.maxValue) {
               setState(() {
                 count++;
               });

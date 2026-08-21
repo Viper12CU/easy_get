@@ -62,7 +62,7 @@ class _AddDownloadBottonSheetState extends State<AddDownloadBottonSheet> {
         if (!_wifiDownload) {
           result = await showAppConfirmDialog(
             context,
-            title: "Descraga sin Wifi",
+            title: "Descarga sin Wi-Fi",
             message:
                 "Por el tamaño del archivo se recomienda usar una red WIFI. ¿Continuar igualmente?",
             tone: ConfirmTone.warning,

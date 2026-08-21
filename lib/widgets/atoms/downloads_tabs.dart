@@ -18,7 +18,7 @@ class _DownloadsTabsState extends State<DownloadsTabs> {
     final ThemeData theme = Theme.of(context); 
 
 
-    final List<String> titles = const ["Active", "Finished", "All"];
+    final List<String> titles = const ["Activas", "Finalizadas", "Todas"];
 
 
     return FlutterTabBarLite.horizontal(

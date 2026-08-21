@@ -3,10 +3,12 @@
 import 'dart:async';
 
 import 'package:background_downloader/background_downloader.dart' as bg;
+import 'package:easy_get/providers/preferences_provider.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/app_download.dart';
 import '../services/download_service.dart';
+import '../services/storage_service.dart';
 
 class DownloadProvider extends ChangeNotifier {
   DownloadProvider({DownloadService? service})
@@ -18,7 +20,7 @@ class DownloadProvider extends ChangeNotifier {
 
   late final StreamSubscription<bg.TaskUpdate> _sub;
 
-  int maxConcurrentDownloads = 3;
+  int maxConcurrentDownloads = PreferencesProvider().simultaneousDownloads;
 
   final Map<String, AppDownload> _tasks = {};
 
@@ -84,6 +86,7 @@ class DownloadProvider extends ChangeNotifier {
     _initLoading = true;
 
     await _service.init(maxConcurrent: maxConcurrentDownloads);
+    debugPrint("-------Concurrent downloads: $maxConcurrentDownloads");
 
     await _restoreTasks();
 
@@ -176,7 +179,7 @@ class DownloadProvider extends ChangeNotifier {
     final nativeTask = await _service.enqueueDownload(
       url: url,
       fileName: name,
-      directory: 'descargas',
+      directory: StorageService.downloadDirectoryName,
       requiresWifi: requiresWifi,
       priority: priority
     );

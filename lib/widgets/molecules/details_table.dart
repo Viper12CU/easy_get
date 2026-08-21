@@ -10,20 +10,37 @@ class DetailsTable extends StatelessWidget {
     return Column(
       children: [
         Divider(),
-        _buildRow("File Name", download.fileName, context),
+        _buildRow("Nombre del archivo", download.fileName, context),
         Divider(),
-        _buildRow("Origin", download.task.hostName, context),
+        _buildRow("Origen", download.task.hostName, context),
         Divider(),
         _buildRow("URL", download.task.url, context),
         Divider(),
-        _buildRow("Size", download.formattedSize, context),
+        _buildRow("Tamaño", download.formattedSize, context),
         Divider(),
-        _buildRow("File Path", download.task.directory, context),
+        _buildRow("Ruta del archivo", download.task.directory, context),
         Divider(),
-        _buildRow("Status", download.status.name, context),
+        _buildRow("Estado", _statusLabel(download.status), context),
         Divider(),
       ],
     );
+  }
+
+  String _statusLabel(AppDownloadStatus status) {
+    switch (status) {
+      case AppDownloadStatus.queued:
+        return "En cola";
+      case AppDownloadStatus.downloading:
+        return "Descargando";
+      case AppDownloadStatus.paused:
+        return "Pausada";
+      case AppDownloadStatus.completed:
+        return "Completada";
+      case AppDownloadStatus.error:
+        return "Error";
+      case AppDownloadStatus.canceled:
+        return "Cancelada";
+    }
   }
 
   Widget _buildRow(String label, String value, BuildContext context) {

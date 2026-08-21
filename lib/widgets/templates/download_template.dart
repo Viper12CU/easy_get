@@ -19,7 +19,7 @@ class DownloadTemplate extends StatelessWidget {
         case 2:
           return const DownloadTabsContents(tab: DownloadTab.all);
         default:
-          return const Center(child: Text("Unknown Tab"));
+          return const Center(child: Text("Pestaña desconocida"));
       }
     }
 

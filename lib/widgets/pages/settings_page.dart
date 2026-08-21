@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
             Navigator.pop(context);
           }),
         ),
-        title: Text("Settings", style: Theme.of(context).textTheme.headlineSmall,)
+        title: Text("Configuración", style: Theme.of(context).textTheme.headlineSmall,)
       ),
       body: SettingsTemplate(),
     );

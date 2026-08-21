@@ -22,7 +22,7 @@ class UrlInputField extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 5.0),
-            child: Text('Link', style: theme.textTheme.labelSmall),
+            child: Text('Enlace', style: theme.textTheme.labelSmall),
           ),
           TextFormField(
             decoration: const InputDecoration(
@@ -31,7 +31,7 @@ class UrlInputField extends StatelessWidget {
             controller: controller,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "This field can't be empty";
+                return "Este campo no puede estar vacío";
               }
               return null;
             },
